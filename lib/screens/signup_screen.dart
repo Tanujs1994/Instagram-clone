@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:instagram/utils/colors.dart';
@@ -34,10 +36,9 @@ class _SignupScreenState extends State<SignupScreen> {
           width: double.infinity,
           child: Column(
             children: [
-               Flexible(
+              Flexible(
                 child: Container(),
                 flex: 2,
-                
               ),
               //svg image
               SvgPicture.asset(
@@ -48,7 +49,27 @@ class _SignupScreenState extends State<SignupScreen> {
               const SizedBox(
                 height: 64,
               ),
-             
+              // circular widget to accept and show our selected file
+              Stack(
+                children: [
+                  CircleAvatar(
+                    radius: 64,
+                    backgroundImage: NetworkImage(
+                        'https://images.unsplash.com/photo-1527555197883-98e27ca0c1ea?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjEyMDd9'),
+                  ),
+                  Positioned(
+                    bottom: -10,
+                    left: 80,
+                    child: IconButton(
+                      onPressed: () {},
+                      icon: Icon(Icons.add_a_photo),
+                    ),
+                  )
+                ],
+              ),
+              const SizedBox(
+                height: 24,
+              ),
               //textfield input for username
               TextFieldInput(
                   textEditingController: _usernameController,
