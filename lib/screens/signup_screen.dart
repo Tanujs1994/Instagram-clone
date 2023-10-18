@@ -5,6 +5,10 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/responsive/mobile_screen_layout.dart';
+import 'package:instagram/responsive/responsive_layout_screen.dart';
+import 'package:instagram/responsive/web_screen_layout.dart';
+import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/text_field_input.dart';
@@ -59,8 +63,21 @@ class _SignupScreenState extends State<SignupScreen> {
     if (res != 'success') {
       showSnackBar(res, context);
     } else {
-      //
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) => const ReponsiveLayout(
+            mobileScreenLayout: MobileScreenLayout(),
+            webScreenLayout: WebScreenLayout(),
+          ),
+        ),
+      );
     }
+  }
+
+  void navigateToSignin() {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (context) => LoginScreen()),
+    );
   }
 
   @override
@@ -152,7 +169,6 @@ class _SignupScreenState extends State<SignupScreen> {
                         child: CircularProgressIndicator(
                           color: primaryColor,
                         ),
-                        
                       )
                     : const Text('Sign up'),
                 width: double.infinity,
@@ -182,21 +198,20 @@ class _SignupScreenState extends State<SignupScreen> {
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: Container(
-                    child: const Text("Don't have an account?"),
+                    child: const Text("have an account?"),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8),
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: navigateToSignin,
                     child: Container(
                       child: const Text(
-                        "Sign up.",
+                        "Log in",
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
-                
                 ),
               ],
             )
