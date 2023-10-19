@@ -31,11 +31,11 @@ class User {
 
   static User fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
-
+    print('line no 12 ${snapshot}');
     return User(
         email: snapshot['email'],
         uid: snapshot['uid'],
-        photoUrl: snapshot['photoUrl'],
+        photoUrl: snapshot['photoUrl']??"",
         username: snapshot['username'],
         bio: snapshot['bio'],
         followers: snapshot['followers'],
