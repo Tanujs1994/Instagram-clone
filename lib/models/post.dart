@@ -29,20 +29,21 @@ class Post {
         "datepublished": datePublished,
         "postUrl": postUrl,
         "profImage": profImage,
-        'likes':likes,
+        'likes': likes,
       };
 
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
-    print('line no 12 ${snapshot}');
+    print('line no 13 ${snapshot}');
     return Post(
-        description: snapshot['description'],
-        uid: snapshot['uid'],
-        postId: snapshot['postId'],
-        username: snapshot['username'],
-        profImage: snapshot['profImage'],
-        likes: snapshot['likes'],
-        postUrl: snapshot['postUrl'],
-        datePublished: snapshot['datepublished']);
+      description: snapshot['description'],
+      uid: snapshot['uid'],
+      postId: snapshot['postId'],
+      username: snapshot['hhh'],
+      profImage: snapshot['profImage'],
+      likes: snapshot['likes'],
+      postUrl: snapshot['postUrl'],
+      datePublished: snapshot['datepublished'],
+    );
   }
 }
