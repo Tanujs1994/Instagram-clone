@@ -39,7 +39,7 @@ class Post {
       description: snapshot['description'],
       uid: snapshot['uid'],
       postId: snapshot['postId'],
-      username: snapshot['hhh'],
+      username: snapshot['username'],
       profImage: snapshot['profImage'],
       likes: snapshot['likes'],
       postUrl: snapshot['postUrl'],
