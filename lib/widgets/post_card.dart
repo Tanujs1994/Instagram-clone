@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:instagram/models/user.dart';
 import 'package:instagram/providers/user_provider.dart';
+import 'package:instagram/resources/firebase_methods.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
@@ -87,7 +88,9 @@ class _PostCardState extends State<PostCard> {
           // IMAGE SECTION
 
           GestureDetector(
-            onDoubleTap: () {
+            onDoubleTap: () async {
+              FirestoreMethods().likePost(
+                  widget.snap['postId'], user.uid, widget.snap['likes']);
               setState(() {
                 isLikeAnimating = true;
               });
@@ -111,11 +114,11 @@ class _PostCardState extends State<PostCard> {
                   opacity: isLikeAnimating ? 1 : 0,
                   child: LikeAnimation(
                     isAnimating: isLikeAnimating,
-                    child: const Icon(
+                    child: widget.snap['likes'].contains(user.uid)?const Icon(
                       Icons.favorite,
-                      color: Colors.white,
+                      color: Colors.red,
                       size: 150,
-                    ),
+                    ) : const Icon(Icons.favorite,color: Colors.white,size: 150,),
                     duration: const Duration(milliseconds: 400),
                     onEnd: () {
                       setState(() {
@@ -136,12 +139,16 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                  onPressed: () {},
-                  icon: const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                  ),
-                ),
+                    onPressed: () async {
+                      await FirestoreMethods().likePost(widget.snap['postId'],
+                          user.uid, widget.snap['likes']);
+                    },
+                    icon: widget.snap['likes'].contains(user.uid)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                          )
+                        : const Icon(Icons.favorite_outline)),
               ),
               IconButton(
                 onPressed: () {},
@@ -166,7 +173,7 @@ class _PostCardState extends State<PostCard> {
 
           //DESCRIPTION AND NUMBER OF COMMENTS
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               horizontal: 16,
             ),
             child: Column(
@@ -205,11 +212,9 @@ class _PostCardState extends State<PostCard> {
                   padding: EdgeInsets.symmetric(vertical: 4),
                   child: InkWell(
                     onTap: () {},
-                    child: Container(
-                      child: Text(
-                        'view all 200 comments',
-                        style: TextStyle(fontSize: 16, color: secondaryColor),
-                      ),
+                    child: const Text(
+                      'view all 200 comments',
+                      style: TextStyle(fontSize: 16, color: secondaryColor),
                     ),
                   ),
                 ),
@@ -217,7 +222,7 @@ class _PostCardState extends State<PostCard> {
                   DateFormat.yMMMd().format(
                     widget.snap['datepublished'].toDate(),
                   ),
-                  style: TextStyle(color: secondaryColor),
+                  style: const TextStyle(color: secondaryColor),
                 ),
               ],
             ),
