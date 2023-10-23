@@ -115,13 +115,7 @@ class _PostCardState extends State<PostCard> {
                   opacity: isLikeAnimating ? 1 : 0,
                   child: LikeAnimation(
                     isAnimating: isLikeAnimating,
-                    child: widget.snap['likes'].contains(user.uid)
-                        ? const Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                            size: 150,
-                          )
-                        : const Icon(
+                    child: const Icon(
                             Icons.favorite,
                             color: Colors.white,
                             size: 150,
@@ -161,7 +155,9 @@ class _PostCardState extends State<PostCard> {
               IconButton(
                 onPressed: () => Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const CommentsScreen(),
+                    builder: (context) =>  CommentsScreen(
+                     snap: widget.snap,
+                    ),
                   ),
                 ),
                 icon: const Icon(
