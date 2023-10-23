@@ -34,7 +34,7 @@ class Post {
 
   static Post fromSnap(DocumentSnapshot snap) {
     var snapshot = snap.data() as Map<String, dynamic>;
-    print('line no 13 ${snapshot}');
+    // print('line no 13 ${snapshot}');
     return Post(
       description: snapshot['description'],
       uid: snapshot['uid'],

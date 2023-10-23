@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:instagram/models/user.dart';
 import 'package:instagram/providers/user_provider.dart';
 import 'package:instagram/resources/firebase_methods.dart';
+import 'package:instagram/screens/comments_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/widgets/like_animation.dart';
 import 'package:intl/intl.dart';
@@ -114,11 +115,17 @@ class _PostCardState extends State<PostCard> {
                   opacity: isLikeAnimating ? 1 : 0,
                   child: LikeAnimation(
                     isAnimating: isLikeAnimating,
-                    child: widget.snap['likes'].contains(user.uid)?const Icon(
-                      Icons.favorite,
-                      color: Colors.red,
-                      size: 150,
-                    ) : const Icon(Icons.favorite,color: Colors.white,size: 150,),
+                    child: widget.snap['likes'].contains(user.uid)
+                        ? const Icon(
+                            Icons.favorite,
+                            color: Colors.red,
+                            size: 150,
+                          )
+                        : const Icon(
+                            Icons.favorite,
+                            color: Colors.white,
+                            size: 150,
+                          ),
                     duration: const Duration(milliseconds: 400),
                     onEnd: () {
                       setState(() {
@@ -126,7 +133,7 @@ class _PostCardState extends State<PostCard> {
                       });
                     },
                   ),
-                )
+                ),
               ],
             ),
           ),
@@ -139,19 +146,24 @@ class _PostCardState extends State<PostCard> {
                 isAnimating: widget.snap['likes'].contains(user.uid),
                 smallLike: true,
                 child: IconButton(
-                    onPressed: () async {
-                      await FirestoreMethods().likePost(widget.snap['postId'],
-                          user.uid, widget.snap['likes']);
-                    },
-                    icon: widget.snap['likes'].contains(user.uid)
-                        ? const Icon(
-                            Icons.favorite,
-                            color: Colors.red,
-                          )
-                        : const Icon(Icons.favorite_outline)),
+                  onPressed: () async {
+                    await FirestoreMethods().likePost(
+                        widget.snap['postId'], user.uid, widget.snap['likes']);
+                  },
+                  icon: widget.snap['likes'].contains(user.uid)
+                      ? const Icon(
+                          Icons.favorite,
+                          color: Colors.red,
+                        )
+                      : const Icon(Icons.favorite_outline),
+                ),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const CommentsScreen(),
+                  ),
+                ),
                 icon: const Icon(
                   Icons.comment_outlined,
                 ),
