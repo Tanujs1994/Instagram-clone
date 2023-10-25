@@ -37,7 +37,9 @@ class _PostCardState extends State<PostCard> {
           .doc(widget.snap['postId'])
           .collection('comments')
           .get();
-      commentLength = snap.docs.length;
+      setState(() {
+        commentLength = snap.docs.length;
+      });
     } catch (e) {
       showSnackBar(e.toString(), context);
     }
@@ -90,7 +92,11 @@ class _PostCardState extends State<PostCard> {
                                 ]
                                     .map(
                                       (e) => InkWell(
-                                        onTap: () {},
+                                        onTap: () {
+                                          FirestoreMethods().deletePost(
+                                              widget.snap['postId']);
+                                          Navigator.of(context).pop();
+                                        },
                                         child: Container(
                                           padding: const EdgeInsets.symmetric(
                                               vertical: 12, horizontal: 16),
@@ -113,7 +119,10 @@ class _PostCardState extends State<PostCard> {
           GestureDetector(
             onDoubleTap: () async {
               FirestoreMethods().likePost(
-                  widget.snap['postId'], user.uid, widget.snap['likes']);
+                widget.snap['postId'],
+                user.uid,
+                widget.snap['likes'],
+              );
               setState(() {
                 isLikeAnimating = true;
               });
