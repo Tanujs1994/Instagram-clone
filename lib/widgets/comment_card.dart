@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class CommentCard extends StatefulWidget {
-  const CommentCard({super.key});
+  final snap;
+  const CommentCard({super.key,required this.snap});
 
   @override
   State<CommentCard> createState() => _CommentCardState();
@@ -16,9 +18,9 @@ class _CommentCardState extends State<CommentCard> {
         // color: Colors.amber,
         child: Row(
           children: [
-            const CircleAvatar(
+             CircleAvatar(
               backgroundImage: NetworkImage(
-                'https://media.istockphoto.com/id/1216277299/photo/portrait-of-young-woman-hugging-her-dog.jpg?s=1024x1024&w=is&k=20&c=zVDHNXVfKtfSQbAprZyNgSmpTL_OXZKDGJZp9kzCp5w=',
+                widget.snap['profilePic']??'https://th.bing.com/th/id/OIF.u95OXogCL9aovMznaZpSZw?pid=ImgDet&rs=1'
               ),
               radius: 18,
             ),
@@ -32,23 +34,25 @@ class _CommentCardState extends State<CommentCard> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     RichText(
-                      text: const TextSpan(
+                      text:  TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Username',
+                            text: widget.snap['username'],
                             style: TextStyle(fontWeight: FontWeight.bold),
                           ),
                           TextSpan(
-                            text: 'some description to insert',
+                            text: '${widget.snap['text']}',
                           ),
                         ],
                       ),
                     ),
-                    const Padding(
+                     Padding(
                       padding: EdgeInsets.only(top: 5),
                       child: Text(
-                        '23/10/2023',
-                        style: TextStyle(
+                        DateFormat.yMMMd().format(
+                          widget.snap['datePublished'].toDate()
+                        ),
+                        style: const TextStyle(
                             fontWeight: FontWeight.w400, fontSize: 12),
                       ),
                     ),
@@ -56,16 +60,12 @@ class _CommentCardState extends State<CommentCard> {
                 ),
               ),
             ),
-            Icon(
+            const Icon(
               Icons.favorite,
             ),
-
           ],
         ),
-        
-        
       ),
-
     );
   }
 }
