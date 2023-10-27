@@ -35,6 +35,7 @@ dependencies:
   firebase_storage: ^11.2.8
   flutter:
     sdk: flutter
+  flutter_launcher_icons: ^0.13.1
   flutter_local_notifications: ^16.1.0
   flutter_staggered_grid_view: ^0.4.1
   flutter_svg: ^2.0.7
@@ -47,6 +48,10 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/appicon/instalogo.jpg"  
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
