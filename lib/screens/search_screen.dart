@@ -87,10 +87,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   );
                 }
                 return StaggeredGridView.countBuilder(
+                  crossAxisSpacing: 5,
+                  mainAxisSpacing: 5,
                   crossAxisCount: 3,
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index) =>
-                      Image.network(snapshot.data!.docs[index]['postUrl']),
+                      Image.network(snapshot.data!.docs[index]['postUrl'], fit: BoxFit.cover,),
                   staggeredTileBuilder: (index) => StaggeredTile.count(
                       (index % 7 == 0) ? 2 : 1, (index % 7 == 0) ? 2 : 1),
                 );
