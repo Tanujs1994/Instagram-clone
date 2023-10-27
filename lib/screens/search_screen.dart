@@ -82,7 +82,6 @@ class _SearchScreenState extends State<SearchScreen> {
                  ), 
                 staggeredTileBuilder: (index) => StaggeredTile.count((index%7 == 0)? 2:1, (index%7 == 0)? 2:1),
                 );
-
             }
             ),
             
