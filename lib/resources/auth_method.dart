@@ -99,5 +99,9 @@ class AuthMethods {
       res = err.toString();
     }
     return res;
+  } 
+
+  Future<void> signOut() async {
+    await _auth.signOut();
   }
 }

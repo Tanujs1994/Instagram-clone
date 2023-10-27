@@ -3,6 +3,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram/resources/auth_method.dart';
+import 'package:instagram/resources/firebase_methods.dart';
+import 'package:instagram/screens/login_screen.dart';
 import 'package:instagram/utils/colors.dart';
 import 'package:instagram/utils/utils.dart';
 import 'package:instagram/widgets/follow_button.dart';
@@ -16,11 +19,11 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileSreenState extends State<ProfileScreen> {
-  var UserData = {};
+  var userData = {};
   int postLength = 0;
   int followers = 0;
   int following = 0;
-  bool isfollowing = false;
+  bool isFollowing = false;
   bool isLoading = false;
   @override
   void initState() {
@@ -48,10 +51,10 @@ class _ProfileSreenState extends State<ProfileScreen> {
 
       setState(() {
         postLength = postSnap.docs.length;
-        UserData = userSnap.data()!;
+        userData = userSnap.data()!;
         followers = userSnap.data()!['followers'].length;
         following = userSnap.data()!['following'].length;
-        isfollowing = userSnap
+        isFollowing = userSnap
             .data()!['followers']
             .contains(FirebaseAuth.instance.currentUser!.uid);
       });
@@ -71,7 +74,7 @@ class _ProfileSreenState extends State<ProfileScreen> {
         : Scaffold(
             appBar: AppBar(
               backgroundColor: mobileBackgroundColor,
-              title: Text(UserData['username']),
+              title: Text(userData['username']),
               centerTitle: false,
             ),
             body: ListView(
@@ -84,7 +87,7 @@ class _ProfileSreenState extends State<ProfileScreen> {
                         children: [
                           CircleAvatar(
                             backgroundColor: Colors.grey,
-                            backgroundImage: NetworkImage(UserData['photoUrl']),
+                            backgroundImage: NetworkImage(userData['photoUrl']),
                             radius: 40,
                           ),
                           Expanded(
@@ -110,24 +113,52 @@ class _ProfileSreenState extends State<ProfileScreen> {
                                             backgroundColor:
                                                 mobileBackgroundColor,
                                             borderColor: Colors.grey,
-                                            text: 'Edit Profile',
+                                            text: 'Sign out',
                                             textColor: primaryColor,
-                                            function: () {},
+                                            function: () async {
+                                              await AuthMethods().signOut();
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        LoginScreen()),
+                                              );
+                                            },
                                           )
-                                        : isfollowing
+                                        : isFollowing
                                             ? FollowButton(
                                                 backgroundColor: Colors.white,
                                                 borderColor: Colors.grey,
                                                 text: 'Unfollow',
                                                 textColor: Colors.black,
-                                                function: () {},
+                                                function: () async {
+                                                  await FirestoreMethods()
+                                                      .followUser(
+                                                          FirebaseAuth.instance
+                                                              .currentUser!.uid,
+                                                          userData['uid']);
+                                                  setState(() {
+                                                    isFollowing = false;
+                                                    followers--;
+                                                  });
+                                                },
                                               )
                                             : FollowButton(
                                                 backgroundColor: Colors.blue,
                                                 borderColor: Colors.blue,
                                                 text: 'Follow',
                                                 textColor: Colors.white,
-                                                function: () {},
+                                                function: () async {
+                                                  await FirestoreMethods()
+                                                      .followUser(
+                                                          FirebaseAuth.instance
+                                                              .currentUser!.uid,
+                                                          userData['uid']);
+                                                  setState(() {
+                                                    isFollowing = true;
+                                                    followers++;
+                                                  });
+                                                },
                                               ),
                                   ],
                                 ),
@@ -142,7 +173,7 @@ class _ProfileSreenState extends State<ProfileScreen> {
                           top: 15,
                         ),
                         child: Text(
-                          UserData['username'],
+                          userData['username'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
                       ),
@@ -151,7 +182,7 @@ class _ProfileSreenState extends State<ProfileScreen> {
                         child: Container(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            UserData['bio'],
+                            userData['bio'],
                           ),
                         ),
                       )
